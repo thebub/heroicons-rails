@@ -19,6 +19,7 @@ GEM
     rbs (1.8.1)
     reline (0.3.7)
       io-console (~> 0.5)
+    rubyzip (2.3.2)
 
 PLATFORMS
   x86_64-linux
@@ -29,6 +30,7 @@ DEPENDENCIES
   nokogiri (~> 1.15)
   rake (~> 13.0)
   rbs (~> 1.8)
+  rubyzip (~> 2.3)
 
 BUNDLED WITH
    2.4.10

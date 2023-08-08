@@ -7,7 +7,7 @@ if [ -z "$VERSION" ]; then
   exit 1
 fi
 
-printf "module Herocisons\n  VERSION = \"$VERSION\"\nend\n" > ./lib/heroicons/version.rb
+printf "module Heroicons\n  VERSION = \"$VERSION\".freeze\nend\n" > ./lib/heroicons/version.rb
 bundle
 git add Gemfile.lock lib/heroicons/version.rb
 git commit -m "Bump version for $VERSION"
