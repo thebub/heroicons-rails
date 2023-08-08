@@ -13,7 +13,7 @@ HEROICONS_RAILS_DOWNLOAD_URL = "https://github.com/tailwindlabs/heroicons/archiv
 HEROICONS_RAILS_GEMSPEC = Bundler.load_gemspec("heroicons-rails.gemspec")
 
 gem_path = Gem::PackageTask.new(HEROICONS_RAILS_GEMSPEC).define
-desc "Build the ruby gem"
+desc "Prepare the gem assets"
 task "gem:ruby" => [gem_path]
 
 warn "Downloading heroicons from #{HEROICONS_RAILS_DOWNLOAD_URL} ..."
@@ -74,6 +74,6 @@ URI.open(HEROICONS_RAILS_DOWNLOAD_URL) do |remote|
     f.write(icon_metadata.to_json)
   end
 
-  warn "Package task completed."
+  warn "Asset prepare task completed."
 
 end
