@@ -6,3 +6,6 @@ source "https://rubygems.org"
 gemspec
 
 gem "rake", "~> 13.0"
+gem "debug", "~> 1.8"
+gem "rbs", "~> 1.8"
+gem "nokogiri", "~> 1.15"
