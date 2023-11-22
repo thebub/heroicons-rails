@@ -15,8 +15,8 @@ git push
 git tag v$VERSION
 git push --tags
 
-rake package
-for gem in pkg/herocions-rails-$VERSION*.gem ; do
-  gem push "$gem" --host https://rubygems.org
-  rm "$gem"
-done
+#rake package
+#for gem in pkg/herocions-rails-$VERSION.gem ; do
+#  gem push "$gem" --host https://rubygems.org
+#  rm "$gem"
+#done
