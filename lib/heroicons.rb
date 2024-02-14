@@ -1,4 +1,4 @@
-require "heroicons/version"
+require "heroicons/upstream"
 require "heroicons/heroicon"
 require "heroicons/railtie" if defined?(Rails)
 require "json"

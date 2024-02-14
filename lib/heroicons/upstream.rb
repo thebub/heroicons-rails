@@ -1,5 +1,5 @@
 module Heroicons
   module Upstream
-    VERSION = "2.0.18".freeze
+    VERSION = "2.1.1".freeze
   end
 end

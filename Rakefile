@@ -24,9 +24,11 @@ end
 desc "Bump the release version"
 task :version, [:v] do |t, args|
   out = "module Heroicons\n"\
-    "  VERSION = \"#{args[:v]}\".freeze\n"\
+    "  module Upstream\n"\
+    "    VERSION = \"#{args[:v]}\".freeze\n"\
+    "  end\n"\
     "end\n"
-  File.open(File.expand_path("../lib/heroicons/version.rb", __FILE__), "w") { |file| file.puts out }
+  File.open(File.expand_path("../lib/heroicons/upstream.rb", __FILE__), "w") { |file| file.puts out }
 end
 
 desc "Run tests"

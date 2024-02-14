@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative "lib/heroicons/version"
+require_relative "lib/heroicons/upstream"
 
 Gem::Specification.new do |spec|
   spec.name = "heroicons-rails"
-  spec.version = Heroicons::VERSION
+  spec.version = Heroicons::Upstream::VERSION
   spec.authors = ["Daniel Bub"]
   spec.email = ["daniel.bub@thebub.net"]
 
