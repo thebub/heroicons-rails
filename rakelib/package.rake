@@ -13,67 +13,78 @@ HEROICONS_RAILS_DOWNLOAD_URL = "https://github.com/tailwindlabs/heroicons/archiv
 HEROICONS_RAILS_GEMSPEC = Bundler.load_gemspec("heroicons-rails.gemspec")
 
 gem_path = Gem::PackageTask.new(HEROICONS_RAILS_GEMSPEC).define
+
+VENDOR_ASSET_BASE_PATH = Heroicons::Heroicon::ASSET_BASE_FOLDER
+METADATA_PATH = Heroicons::Heroicon::METADATA_PATH
+
+# prepend the download task before the Gem::PackageTask tasks
+task :package => :download
+task :download => :clean
+
 desc "Prepare the gem assets"
 task "gem:ruby" => [gem_path]
 
-warn "Downloading heroicons from #{HEROICONS_RAILS_DOWNLOAD_URL} ..."
+desc "Download all herocion files"
+task "download" do
+  warn "Downloading heroicons from #{HEROICONS_RAILS_DOWNLOAD_URL} ..."
 
-URI.open(HEROICONS_RAILS_DOWNLOAD_URL) do |remote|
+  URI.open(HEROICONS_RAILS_DOWNLOAD_URL) do |remote|
 
-  warn "Download completed!\n"
+    warn "Download completed!\n"
 
-  vendor_asset_base_path = Heroicons::Heroicon::ASSET_BASE_FOLDER
+    # Create temp asset folder
+    FileUtils.mkdir_p(VENDOR_ASSET_BASE_PATH)
 
-  # Clear existing temp asset folder
-  File.exist?(vendor_asset_base_path) ? FileUtils.remove_dir(vendor_asset_base_path) : nil
+    zip_src_base_path = "heroicons-#{Heroicons::Upstream::VERSION}/optimized/"
 
-  # Create temp asset folder
-  FileUtils.mkdir_p(vendor_asset_base_path)
+    icon_metadata = []
 
-  zip_src_base_path = "heroicons-#{Heroicons::Upstream::VERSION}/optimized/"
-  
-  icon_metadata = []
+    Zip::File.open_buffer(remote.read) do |zip|
+      zip.each do |entry|
 
-  Zip::File.open_buffer(remote.read) do |zip|
-    zip.each do |entry|
+        if File.dirname(entry.name).start_with?(zip_src_base_path) && File.extname(entry.name) == ".svg"
+          matches = entry.name.match /(.+)\/(.+)\/(.+)\/(([^\/]+)(.svg))/
 
-      if File.dirname(entry.name).start_with?(zip_src_base_path) && File.extname(entry.name) == ".svg"
-        matches = entry.name.match /(.+)\/(.+)\/(.+)\/(([^\/]+)(.svg))/
-        
-        name = matches[5]
-        type = matches[3]
-        size = matches[2]
+          name = matches[5]
+          type = matches[3]
+          size = matches[2]
 
-        warn "Processing icon: #{name} (size: #{size}, type: #{type})"
+          warn "Processing icon: #{name} (size: #{size}, type: #{type})"
 
-        FileUtils.mkdir_p(vendor_asset_base_path + File.dirname(entry.name).delete_prefix(zip_src_base_path))
+          FileUtils.mkdir_p(VENDOR_ASSET_BASE_PATH + File.dirname(entry.name).delete_prefix(zip_src_base_path))
 
-        # TODO: Add sanity checks, matching metadata with SVG attributes
-        # TODO: Clean SVG of unwanted attributes
-        #doc = Nokogiri::HTML::DocumentFragment.parse(entry.get_input_stream.read)
-        #element = doc.at_css 'svg'
+          # TODO: Add sanity checks, matching metadata with SVG attributes
+          # TODO: Clean SVG of unwanted attributes
+          #doc = Nokogiri::HTML::DocumentFragment.parse(entry.get_input_stream.read)
+          #element = doc.at_css 'svg'
 
-        iconpath = vendor_asset_base_path + entry.name.delete_prefix(zip_src_base_path) 
+          iconpath = VENDOR_ASSET_BASE_PATH + entry.name.delete_prefix(zip_src_base_path)
 
-        File.open(iconpath, "wb") do |local|
-          local.write(entry.get_input_stream.read)
+          File.open(iconpath, "wb") do |local|
+            local.write(entry.get_input_stream.read)
+          end
+
+          icon_metadata.push({
+            "name": name,
+            "type": type,
+            "size": size,
+            "path": iconpath
+          })
         end
-
-        icon_metadata.push({
-          "name": name,
-          "type": type,
-          "size": size,
-          "path": iconpath
-        })
       end
     end
-  end  
 
-  warn "Writing metadata file..."
-  File.open(vendor_asset_base_path + "data.json", "wb") do |f|
-    f.write(icon_metadata.to_json)
+    warn "Writing metadata file..."
+    File.open(METADATA_PATH, "wb") do |f|
+      content = {
+        "version": Heroicons::Upstream::VERSION,
+        "icons": icon_metadata
+      }
+
+      f.write(content.to_json)
+    end
+
+    warn "Download task completed."
+
   end
-
-  warn "Asset prepare task completed."
-
 end

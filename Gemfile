@@ -2,8 +2,9 @@
 
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in heroicons-rails.gemspec
 gemspec
+
+gem "rails"
 
 group :release do
   gem "nokogiri", "~> 1.15"
@@ -17,5 +18,5 @@ group :development, :test do
   gem "rubocop-github", "0.12.0"
   gem 'rubocop-rake', require: false
   gem "rbs", "~> 1.8"
-  gem "debug", "~> 1.8" 
+  gem "debug", "~> 1.8"
 end

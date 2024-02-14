@@ -1,3 +1,3 @@
 module Heroicons
-  VERSION = "0.1".freeze
+  VERSION = "".freeze
 end

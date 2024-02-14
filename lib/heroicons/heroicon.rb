@@ -3,6 +3,7 @@ module Heroicons
     DEFAULT_HEIGHT = 16
 
     ASSET_BASE_FOLDER = "vendor/assets/heroicons/"
+    METADATA_PATH = ASSET_BASE_FOLDER + "data.json"
 
     @@cache = {}
 
@@ -25,7 +26,7 @@ module Heroicons
           icon
         else
           ""
-        end          
+        end
       end
     end
   end
