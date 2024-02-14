@@ -9,7 +9,7 @@ require_relative "lib/heroicons/heroicon"
 
 CLEAN.include("vendor/**/*")
 
-task :test => :check_assets
+task :test => :download
 
 RuboCop::RakeTask.new(:lint) do |t|
   t.options = ["--display-cop-names"]
@@ -19,17 +19,6 @@ Rake::TestTask.new do |t|
   t.libs = ["lib", "test"]
   t.test_files = FileList["test/**/*_test.rb"]
   t.warning = false
-end
-
-desc "Validate existence of required assets"
-task :check_assets do
-  warn "Checking existence of assets."
-  if not File.exist?(Heroicons::Heroicon::METADATA_PATH)
-    warn "Assets are missing. Initiating download..."
-    Rake::Task["download"].invoke
-  else
-    warn "Assets do exist. Continue..."
-  end
 end
 
 desc "Bump the release version"

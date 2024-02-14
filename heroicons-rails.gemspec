@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.authors = ["Daniel Bub"]
   spec.email = ["daniel.bub@thebub.net"]
 
-  spec.summary = "Add Tailwindlabs Heroisons to a Rails project."
-  spec.description = "Add the full set of Herocicons to a Rails project, similar to teilwindcss-rails does for the associated tailwindcss."
+  spec.summary = "Add Tailwindlabs Heroicons to a Rails project."
+  spec.description = "Add the full set of Herocicons to a Rails project, similar to tailwindcss-rails does for the associated tailwindcss."
   spec.homepage = "https://github.com/thebub/heroicons-rails"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 2.6.0"
@@ -24,9 +24,8 @@ Gem::Specification.new do |spec|
       (File.expand_path(f) == __FILE__) || f.start_with?(*%w[bin/ test/ spec/ features/ .git .circleci appveyor])
     end
   end + Dir["{vendor}/**/*"]
-  
-  spec.bindir = "exe"
-  spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
+
+  spec.bindir = "bin"
   spec.require_paths = ["lib"]
 
 end
